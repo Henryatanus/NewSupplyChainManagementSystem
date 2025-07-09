@@ -2,12 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\Inventory;
+use App\Models\CoffeeBean;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class FactoryDashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard.factory');
+        $user = Auth::user();
+
+        // Get orders assigned to this factory
+        $ordersToFulfill = Order::with('placedBy', 'coffeeBean')
+            ->where('fulfilled_by', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // Inventory managed by this factory (assuming supply center managed by user)
+        $inventory = Inventory::with('coffeeBean', 'supplyCenter')
+            ->whereHas('supplyCenter', function ($q) use ($user) {
+                $q->where('manager_id', $user->id);
+            })
+            ->get();
+
+        // Count how many unique coffee beans this factory has processed
+        $coffeeBeansProcessed = $ordersToFulfill->pluck('coffeeBean')->unique('id')->count();
+
+        return view('dashboard.factory', compact(
+            'ordersToFulfill',
+            'inventory',
+            'coffeeBeansProcessed'
+        ));
     }
 }

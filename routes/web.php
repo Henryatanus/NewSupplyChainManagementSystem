@@ -60,17 +60,21 @@ Route::get('/factory/dashboard', [FarmerDashboardController::class, 'index'])
 
 //Based on dashboard
     Route::middleware(['auth', 'role:admin'])->group(function () {
-        Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.admin');
+    
+        Route::post('/admin/vendor/{id}/approve', [AdminDashboardController::class, 'approveVendor'])->name('admin.vendor.approve');
+        Route::post('/admin/vendor/{id}/reject', [AdminDashboardController::class, 'rejectVendor'])->name('admin.vendor.reject');
+    
     });
     
     Route::middleware(['auth', 'role:farmer'])->group(function () {
-        Route::get('/farmer/dashboard', [FarmerDashboardController::class, 'index'])->name('farmer.dashboard');
+        Route::get('/farmer/dashboard', [FarmerDashboardController::class, 'index'])->name('dashboard.farmer');
     });
     
     Route::middleware(['auth', 'role:wholesaler'])->group(function () {
-        Route::get('/wholesaler/dashboard', [WholesalerDashboardController::class, 'index'])->name('wholesaler.dashboard');
+        Route::get('/wholesaler/dashboard', [WholesalerDashboardController::class, 'index'])->name('dashboard.wholesaler');
     });
     
     Route::middleware(['auth', 'role:factory'])->group(function () {
-        Route::get('/factory/dashboard', [FactoryDashboardController::class, 'index'])->name('factory.dashboard');
+        Route::get('/factory/dashboard', [FactoryDashboardController::class, 'index'])->name('dashboard.factory');
     });
