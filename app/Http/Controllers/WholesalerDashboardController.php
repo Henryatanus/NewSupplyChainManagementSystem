@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\ChatMessage;
 use App\Models\Inventory;
 use App\Models\SupplyCenter;
+use App\Models\User;
 
 class WholesalerDashboardController extends Controller
 {
@@ -34,12 +35,14 @@ class WholesalerDashboardController extends Controller
 
         // Supply centers wholesaler manages - assuming a relation or you can query by user id
         $supplyCenters = SupplyCenter::where('manager_id', $user->id)->get();
-
+        $users = User::where('id', '!=', auth()->id())->get();
         return view('dashboard.wholesaler', compact(
             'ordersToFulfill',
             'chatMessages',
             'inventories',
-            'supplyCenters'
+            'supplyCenters',
+            'users'
+           
         ));
     }
 }

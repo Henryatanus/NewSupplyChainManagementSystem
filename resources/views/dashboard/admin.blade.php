@@ -77,6 +77,37 @@
         </table>
     @endif
 </div>
+<div>
+<div class="p-4 border rounded mb-4">
+    <h3 class="text-lg font-bold mb-2">Start a Chat</h3>
 
+    @if($users->count())
+        <ul class="space-y-2">
+            @foreach($users as $user)
+                <li class="flex items-center justify-between">
+                    <span>{{ $user->name }} ({{ $user->getRoleNames()->first() }})</span>
+                    <a href="{{ route('chat', ['receiverId' => $user->id]) }}"
+                       class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                        Chat
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+    @else
+        <p>No users available for chat.</p>
+    @endif
 </div>
+   <div>
+   @foreach ($users as $user)
+    @if($user->id !== auth()->id()) {{-- Don't show yourself --}}
+        <a href="{{ route('chat', ['receiverId' => $user->id]) }}" class="block text-blue-600 hover:underline">
+            Chat with {{ $user->name }}
+        </a>
+    @endif
+@endforeach
+   </div>
+
+    
+</div>
+  
 </x-app-layout>

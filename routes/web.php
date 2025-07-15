@@ -6,6 +6,9 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\FarmerDashboardController;
 use App\Http\Controllers\WholesalerDashboardController;
 use App\Http\Controllers\FactoryDashboardController;
+use App\Http\Controllers\ChatController;
+use App\Livewire\Chat;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/chat/{receiverId}', Chat::class)->name('chat');
 });
 
 require __DIR__.'/auth.php';
@@ -78,3 +82,4 @@ Route::get('/factory/dashboard', [FarmerDashboardController::class, 'index'])
     Route::middleware(['auth', 'role:factory'])->group(function () {
         Route::get('/factory/dashboard', [FactoryDashboardController::class, 'index'])->name('dashboard.factory');
     });
+    Route::get('/chat/{receiverId}', Chat::class)->name('chat');

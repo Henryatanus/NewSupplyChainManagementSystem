@@ -30,11 +30,14 @@ class FactoryDashboardController extends Controller
 
         // Count how many unique coffee beans this factory has processed
         $coffeeBeansProcessed = $ordersToFulfill->pluck('coffeeBean')->unique('id')->count();
-
+        
+        $users = User::where('id', '!=', auth()->id())->get(); // optionally filter by role
+   
         return view('dashboard.factory', compact(
             'ordersToFulfill',
             'inventory',
-            'coffeeBeansProcessed'
+            'coffeeBeansProcessed',
+            'users'
         ));
     }
 }

@@ -21,4 +21,23 @@ class VendorApplication extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+    public function index()
+{
+    $totalUsers = User::count();
+
+    $pendingVendors = VendorApplication::where('status', 'pending')->count();
+
+    $pendingVendorList = VendorApplication::where('status', 'pending')->with('user')->get();
+
+    $chatableUsers = auth()->user()->chatableUsers();
+
+    return view('dashboard.admin', compact(
+        'totalUsers',
+        'pendingVendors',
+        'pendingVendorList',
+        'chatableUsers'
+    ));
+}
 }

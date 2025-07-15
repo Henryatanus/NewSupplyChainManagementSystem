@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\ChatMessage;
 use App\Models\CoffeeBean;
 use App\Models\Inventory;
+use App\Models\User;
 
 class FarmerDashboardController extends Controller
 {
@@ -30,6 +31,9 @@ class FarmerDashboardController extends Controller
     // Assuming farmer has access to supply centers; you can filter by location/assigned centers as needed
     $inventories = Inventory::with('supplyCenter.manager', 'coffeeBean')->get();
     $recentOrders=[];
-    return view('dashboard.farmer', compact('recentOrders', 'chatMessages', 'coffeeBeans', 'inventories'));
+
+    $users = User::where('id', '!=', auth()->id())->get();
+    return view('dashboard.farmer', 
+    compact('recentOrders', 'chatMessages', 'coffeeBeans', 'inventories','users'));
 }
 }

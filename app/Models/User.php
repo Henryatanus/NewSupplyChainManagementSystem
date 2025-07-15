@@ -13,7 +13,7 @@ use App\Models\User;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles;
 
     protected $fillable = [
         'name',
@@ -41,6 +41,25 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'fulfilled_by');
     }
+
+    public function messages()
+{
+    return $this->hasMany(Message::class);
+}
+
+
+public function sentMessages()
+    {
+        return $this->hasMany(ChatMessage::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(ChatMessage::class, 'receiver_id');
+    }
+
+
+
 }
 
 
