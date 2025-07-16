@@ -33,7 +33,25 @@ class FarmerDashboardController extends Controller
     $recentOrders=[];
 
     $users = User::where('id', '!=', auth()->id())->get();
+    
+
+    $userId = Auth::id();
+
+    // Example: orders where current supplier is the one supplying
+    $orders = Order::where('supplier_id', $userId)->latest()->get();
+
+    $monthlyOrders = $orders->groupBy(function ($order) {
+        return $order->created_at->format('F');
+    })->map(function ($group) {
+        return count($group);
+    });
+
+    $totalRevenue = $orders->sum('total_price');
+
     return view('dashboard.farmer', 
-    compact('recentOrders', 'chatMessages', 'coffeeBeans', 'inventories','users'));
+    compact('recentOrders', 'chatMessages', 'coffeeBeans', 'inventories','users','monthlyOrders', 'totalRevenue'));
+
+
+
 }
 }

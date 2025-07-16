@@ -106,6 +106,26 @@
 @endforeach
    </div>
       
+   <div><h2 class="text-xl font-bold mb-4">Analytics Summary</h2>
+
+<div class="grid grid-cols-2 gap-4">
+    <div class="p-4 bg-white shadow rounded">
+        <h3 class="text-lg font-semibold">Total Revenue</h3>
+        <p class="text-2xl text-green-600">UGX {{ number_format($totalRevenue) }}</p>
+    </div>
+
+    <div class="p-4 bg-white shadow rounded">
+        <h3 class="text-lg font-semibold">Orders This Month</h3>
+        <p class="text-2xl text-blue-600">{{ $monthlyOrders[now()->format('F')] ?? 0 }}</p>
+    </div>
+</div>
+</div>
+     
+  <div>
+  <livewire:vendor-validation-upload />
+
+  </div>
+
 
     </div>
     

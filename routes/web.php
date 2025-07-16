@@ -82,4 +82,14 @@ Route::get('/factory/dashboard', [FarmerDashboardController::class, 'index'])
     Route::middleware(['auth', 'role:factory'])->group(function () {
         Route::get('/factory/dashboard', [FactoryDashboardController::class, 'index'])->name('dashboard.factory');
     });
+
+    //Chat Routes
     Route::get('/chat/{receiverId}', Chat::class)->name('chat');
+
+    //Analytics Routes
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+    });
+
+    //Vendor validation
+    Route::post('/vendors/validate', [VendorController::class, 'validateCertificate'])->name('vendors.validate');
